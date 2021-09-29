@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="ISO-8859-1"?><pnml>
+    <net id="Net-One" type="P/T net">
+        <token id="Default" enabled="true" red="0" green="0" blue="0"/>
+        <place id="Lumiere de trafique">
+            <graphics>
+                <position x="630.0" y="330.0"/>
+            </graphics>
+            <name>
+                <value>Lumiere de trafique</value>
+                <graphics>
+                    <offset x="-12.0" y="20.0"/>
+                </graphics>
+            </name>
+            <initialMarking>
+                <value>Default,1</value>
+                <graphics>
+                    <offset x="0.0" y="0.0"/>
+                </graphics>
+            </initialMarking>
+            <capacity>
+                <value>0</value>
+            </capacity>
+        </place>
+        <place id="Vers la rive sud">
+            <graphics>
+                <position x="630.0" y="180.0"/>
+            </graphics>
+            <name>
+                <value>Vers la rive sud</value>
+                <graphics>
+                    <offset x="64.0" y="-8.0"/>
+                </graphics>
+            </name>
+            <initialMarking>
+                <value>Default,1</value>
+                <graphics>
+                    <offset x="0.0" y="0.0"/>
+                </graphics>
+            </initialMarking>
+            <capacity>
+                <value>0</value>
+            </capacity>
+        </place>
+        <place id="Vers Montreal">
+            <graphics>
+                <position x="615.0" y="480.0"/>
+            </graphics>
+            <name>
+                <value>Vers Montreal</value>
+                <graphics>
+                    <offset x="54.0" y="63.0"/>
+                </graphics>
+            </name>
+            <initialMarking>
+                <value>Default,0</value>
+                <graphics>
+                    <offset x="0.0" y="0.0"/>
+                </graphics>
+            </initialMarking>
+            <capacity>
+                <value>0</value>
+            </capacity>
+        </place>
+        <place id="Voiture sort du tunnel">
+            <graphics>
+                <position x="1020.0" y="180.0"/>
+            </graphics>
+            <name>
+                <value>Voiture sort du tunnel</value>
+                <graphics>
+                    <offset x="76.0" y="-21.0"/>
+                </graphics>
+            </name>
+            <initialMarking>
+                <value>Default,1</value>
+                <graphics>
+                    <offset x="0.0" y="0.0"/>
+                </graphics>
+            </initialMarking>
+            <capacity>
+                <value>0</value>
+            </capacity>
+        </place>
+        <place id="Voiture sort du tunnel 2">
+            <graphics>
+                <position x="240.0" y="480.0"/>
+            </graphics>
+            <name>
+                <value>Voiture sort du tunnel 2</value>
+                <graphics>
+                    <offset x="82.0" y="-11.0"/>
+                </graphics>
+            </name>
+            <initialMarking>
+                <value>Default,0</value>
+                <graphics>
+                    <offset x="0.0" y="0.0"/>
+                </graphics>
+            </initialMarking>
+            <capacity>
+                <value>0</value>
+            </capacity>
+        </place>
+        <transition id="Entrer Tunnel M">
+            <graphics>
+                <position x="390.0" y="180.0"/>
+            </graphics>
+            <name>
+                <value>Entrer Tunnel M</value>
+                <graphics>
+                    <offset x="60.0" y="-17.0"/>
+                </graphics>
+            </name>
+            <orientation>
+                <value>0</value>
+            </orientation>
+            <rate>
+                <value>1.0</value>
+            </rate>
+            <timed>
+                <value>false</value>
+            </timed>
+            <infiniteServer>
+                <value>false</value>
+            </infiniteServer>
+            <priority>
+                <value>1</value>
+            </priority>
+        </transition>
+        <transition id="Entrer TunnelRS">
+            <graphics>
+                <position x="1005.0" y="480.0"/>
+            </graphics>
+            <name>
+                <value>Entrer TunnelRS</value>
+                <graphics>
+                    <offset x="55.0" y="59.0"/>
+                </graphics>
+            </name>
+            <orientation>
+                <value>0</value>
+            </orientation>
+            <rate>
+                <value>1.0</value>
+            </rate>
+            <timed>
+                <value>false</value>
+            </timed>
+            <infiniteServer>
+                <value>false</value>
+            </infiniteServer>
+            <priority>
+                <value>1</value>
+            </priority>
+        </transition>
+        <transition id="Sortir de Montreal">
+            <graphics>
+                <position x="930.0" y="180.0"/>
+            </graphics>
+            <name>
+                <value>Sortir de Montreal</value>
+                <graphics>
+                    <offset x="86.0" y="72.0"/>
+                </graphics>
+            </name>
+            <orientation>
+                <value>0</value>
+            </orientation>
+            <rate>
+                <value>1.0</value>
+            </rate>
+            <timed>
+                <value>false</value>
+            </timed>
+            <infiniteServer>
+                <value>false</value>
+            </infiniteServer>
+            <priority>
+                <value>1</value>
+            </priority>
+        </transition>
+        <transition id="Voiture sort du tunel">
+            <graphics>
+                <position x="330.0" y="480.0"/>
+            </graphics>
+            <name>
+                <value>Voiture sort du tunel</value>
+                <graphics>
+                    <offset x="68.0" y="73.0"/>
+                </graphics>
+            </name>
+            <orientation>
+                <value>0</value>
+            </orientation>
+            <rate>
+                <value>1.0</value>
+            </rate>
+            <timed>
+                <value>false</value>
+            </timed>
+            <infiniteServer>
+                <value>false</value>
+            </infiniteServer>
+            <priority>
+                <value>1</value>
+            </priority>
+        </transition>
+        <arc id="Entrer Tunnel M to Vers la rive sud" source="Entrer Tunnel M" target="Vers la rive sud">
+            <graphics/>
+            <inscription>
+                <value>Default,1</value>
+                <graphics/>
+            </inscription>
+            <tagged>
+                <value>false</value>
+            </tagged>
+            <arcpath id="000" x="407" y="187" curvePoint="false"/>
+            <arcpath id="001" x="627" y="191" curvePoint="false"/>
+            <type value="normal"/>
+        </arc>
+        <arc id="Entrer TunnelRS to Lumiere de trafique" source="Entrer TunnelRS" target="Lumiere de trafique">
+            <graphics/>
+            <inscription>
+                <value>Default,1</value>
+                <graphics/>
+            </inscription>
+            <tagged>
+                <value>false</value>
+            </tagged>
+            <arcpath id="000" x="1012" y="486" curvePoint="false"/>
+            <arcpath id="001" x="655" y="347" curvePoint="false"/>
+            <type value="normal"/>
+        </arc>
+        <arc id="Lumiere de trafique to Entrer Tunnel M" source="Lumiere de trafique" target="Entrer Tunnel M">
+            <graphics/>
+            <inscription>
+                <value>Default,1</value>
+                <graphics/>
+            </inscription>
+            <tagged>
+                <value>false</value>
+            </tagged>
+            <arcpath id="000" x="629" y="334" curvePoint="false"/>
+            <arcpath id="001" x="406" y="197" curvePoint="false"/>
+            <type value="normal"/>
+        </arc>
+        <arc id="Lumiere de trafique to Voiture sort du tunel" source="Lumiere de trafique" target="Voiture sort du tunel">
+            <graphics/>
+            <inscription>
+                <value>Default,1</value>
+                <graphics/>
+            </inscription>
+            <tagged>
+                <value>false</value>
+            </tagged>
+            <arcpath id="000" x="628" y="348" curvePoint="false"/>
+            <arcpath id="001" x="347" y="487" curvePoint="false"/>
+            <type value="normal"/>
+        </arc>
+        <arc id="Sortir de Montreal to Lumiere de trafique" source="Sortir de Montreal" target="Lumiere de trafique">
+            <graphics/>
+            <inscription>
+                <value>Default,1</value>
+                <graphics/>
+            </inscription>
+            <tagged>
+                <value>false</value>
+            </tagged>
+            <arcpath id="000" x="936" y="197" curvePoint="false"/>
+            <arcpath id="001" x="655" y="335" curvePoint="false"/>
+            <type value="normal"/>
+        </arc>
+        <arc id="Sortir de Montreal to Voiture sort du tunnel" source="Sortir de Montreal" target="Voiture sort du tunnel">
+            <graphics/>
+            <inscription>
+                <value>Default,1</value>
+                <graphics/>
+            </inscription>
+            <tagged>
+                <value>false</value>
+            </tagged>
+            <arcpath id="000" x="946" y="192" curvePoint="false"/>
+            <arcpath id="001" x="1017" y="192" curvePoint="false"/>
+            <type value="normal"/>
+        </arc>
+        <arc id="Vers la rive sud to Sortir de Montreal" source="Vers la rive sud" target="Sortir de Montreal">
+            <graphics/>
+            <inscription>
+                <value>Default,1</value>
+                <graphics/>
+            </inscription>
+            <tagged>
+                <value>false</value>
+            </tagged>
+            <arcpath id="000" x="656" y="191" curvePoint="false"/>
+            <arcpath id="001" x="937" y="187" curvePoint="false"/>
+            <type value="normal"/>
+        </arc>
+        <arc id="Vers Montreal to Voiture sort du tunel" source="Vers Montreal" target="Voiture sort du tunel">
+            <graphics/>
+            <inscription>
+                <value>Default,1</value>
+                <graphics/>
+            </inscription>
+            <tagged>
+                <value>false</value>
+            </tagged>
+            <arcpath id="000" x="612" y="492" curvePoint="false"/>
+            <arcpath id="001" x="346" y="497" curvePoint="false"/>
+            <type value="normal"/>
+        </arc>
+        <arc id="Voiture sort du tunel to Voiture sort du tunnel 2" source="Voiture sort du tunel" target="Voiture sort du tunnel 2">
+            <graphics/>
+            <inscription>
+                <value>Default,1</value>
+                <graphics/>
+            </inscription>
+            <tagged>
+                <value>false</value>
+            </tagged>
+            <arcpath id="000" x="336" y="492" curvePoint="false"/>
+            <arcpath id="001" x="266" y="492" curvePoint="false"/>
+            <type value="normal"/>
+        </arc>
+    </net>
+</pnml>

@@ -1,0 +1,108 @@
+<html><head><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"><title>Impatient Markdown</title><link href="http://strapdownjs.com/v/0.2/themes/united.min.css" rel="stylesheet"><link href="http://strapdownjs.com/v/0.2/strapdown.css" rel="stylesheet"><link href="http://strapdownjs.com/v/0.2/themes/bootstrap-responsive.min.css" rel="stylesheet"></head><body marginwidth="0" marginheight="0" style=""><div class="navbar navbar-fixed-top"><div class="navbar-inner"> <div class="container"> <div id="headline" class="brand">Impatient Markdown</div> </div> </div></div><div class="container" id="content"> <style>
+
+ .center{
+
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+ }
+
+ h1.center{
+
+ text-align:center 
+ }
+
+ p.math{
+
+  text-align:center;
+  margin-right: 2em;
+  font-size:1.5em;
+  font-family: font-family: Courier, Monaco, monospace;
+
+ }
+
+ .left{
+  text-align:left;
+
+ }
+
+ .right{
+ display:block;
+ margin-right: 0;
+
+ }
+
+</style>
+
+<h1 class="center">🚧👷 Analyse du réseau pétri (Tunnel) 🚧👷 </h1>
+
+<div>
+
+<img width="600" src="Sequence_tunnel.gif" alt="sequence dans le tunnel">
+<img width="300" src="space_analysis.png" alt="sequence dans le tunnel">
+</div>
+
+<h3>🚓 Loi de conservation:</h3>
+<p>Notre réseau de pétri respecte la loi de conservation,  les jetons restent constants pour les états atteignables, les jetons ne disparaissent pas du système, ils ne s'engrendrent pas de manière arbitaire. <em>Le nombre de jetons est limité au une certaine constante K</em>. <strong>(Système borné)</strong>.</p>
+<h4>🔒  Dans notre cas particulier <em>K = 1</em> :</h4>
+<p><strong>Par exemple:</strong> si on commence à Montréal, on sort du tunnel, et on reviens à la situation initiale, on réalise qu'il y au plus un jeton par place dans le diagramme.</p>
+<ul>
+<li>Si on regarde l'animation le nombre de jetons par place reste ≤  1.</li>
+</ul>
+<ul>
+<li>PIPE confirme que notre <strong>réseau est sécuritaire</strong> dans <em>State Space Analysis</em>.</li>
+</ul>
+<p><br></p>
+<h3>🚦 Zones d'exclusion mutuelle</h3>
+<ul>
+<li><p>Les états P₅ et P₄ agissent comme des semaphores <strong>(Aucune voiture ne peut traverser lorsqu'une autre voiture emprunte la voie contraire)</strong>.</p>
+<ul>
+<li>Lorsqu'une voiture rentre dans le tunnel, elle consomme un jeton et elle le libère dès qu'elle sort du tunnel.</li>
+</ul>
+</li>
+</ul>
+<p><br>
+- <strong>Cela est fait en accord à l'énoncé du devoir:</strong>
+<br></p>
+<blockquote>
+<p><strong><em>« On introduit une lumière de chaque côté qui permet de faire passer une voiture à la fois de chaque côté de manière équitable.»</em></strong></p>
+<p>–<cite>DM2</cite></p>
+</blockquote>
+<h3>Analyse selon le graphe de couverture:</h3>
+<div style="text-align:center;">
+
+<img width="400" src="Graphe_couverture.png" alt="sequence dans le tunnel">
+<img width="400" src="graphCov.png" alt="sequence dans le tunnel">
+
+</div>
+
+<h3>🌵  Nos transitions sont <strong>vivaces</strong>:</h3>
+<ul>
+<li><p>Il n'existe pas de transition morte (L0) dans notre réseau.</p>
+</li>
+<li><p>Toutes les transitions peuvent être franchies au moins k.</p>
+<ul>
+<li><em>k = {k | k &gt;1 ∈ N}</em>  fois de type <strong><em>(L-2 vivante).</em></strong></li>
+</ul>
+</li>
+</ul>
+<h3>❌  Aucun interblockage</h3>
+<ul>
+<li>Le graphe de couverture n'amènent pas à un cul-de-sac.</li>
+<li>PIPE le confirme dans <em>State Space Analysis</em>.</li>
+</ul>
+<h3>🍲 Pas de famine:</h3>
+<ul>
+<li>Il n'existe pas une séquence qui part vers un sous-arbre du graphe et ne revienne jamais. <strong>(notre graphe et cyclique)</strong></li>
+</ul>
+<h3>🤝🏼  Traitement équitable</h3>
+<ul>
+<li>Sur l'animation gif en haut de ce rapport,  on remarque que, lorsqu'une voiture sort du tunnel, on donne inmédiatement la place à celle de la voie contraire. <ul>
+<li>Une voiture viens après l'autre du sens contraire.</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>Il n'existe pas une situation qui donne une priorité à une voie sur une autre.</li>
+</ul>
+</div></script></body></html>

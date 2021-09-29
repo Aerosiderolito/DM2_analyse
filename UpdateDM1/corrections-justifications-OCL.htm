@@ -1,0 +1,92 @@
+<html><head><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"><title>Impatient Markdown</title><link href="http://strapdownjs.com/v/0.2/themes/united.min.css" rel="stylesheet"><link href="http://strapdownjs.com/v/0.2/strapdown.css" rel="stylesheet"><link href="http://strapdownjs.com/v/0.2/themes/bootstrap-responsive.min.css" rel="stylesheet"></head><body marginwidth="0" marginheight="0" style=""><div class="navbar navbar-fixed-top"><div class="navbar-inner"> <div class="container"> <div id="headline" class="brand">Impatient Markdown</div> </div> </div></div><div class="container" id="content"><h2>Justifications:</h2>
+<h4>Pour controler les opérations:</h4>
+<p>Nous avons crée les classes </p>
+<ul>
+<li><p><strong>VerifierFormHandler: </strong> pour les opérations liées a la recherche et à l'affichage des voyages. </p>
+</li>
+<li><p><strong>TerminalHelper: </strong>
+pour les opérations liées a la création de terminaux (classe créatrice).</p>
+</li>
+<li><p><strong>LoginHelper: </strong> pour l'opération de log.</p>
+</li>
+<li><p><strong>PayerFormHandler : </strong> pour les opérations liées au
+paiement d'une réservation. </p>
+</li>
+<li><p><strong>PaiementHelper: </strong> st aussi une classe créatrice qui va instancier un paiement. </p>
+</li>
+<li><p><strong>classeReserverFormHandler:</strong> contrôle les réservations et utilise la classe ReservationHelper.</p>
+</li>
+<li><p><strong>ReservationHelper: </strong>Enfin en dernier lieu nous avons la classe ItineraireHelper qui est utilisée pour:</p>
+<ul>
+<li>construire (créateur)</li>
+<li>mettre à jour</li>
+<li>supprimer une instance d'Itinéraire</li>
+</ul>
+</li>
+</ul>
+<p><br></p>
+<h4>En ce qui concerne les classe de compagnies:</h4>
+<p>Nous avons crée une classe pour chaque type <strong><em>(CompagnieAérienne, CompagnieFerroviaire, et CompagnieCroisière)</em></strong>. Celles-ci
+contiennent la plupart des opérations qui ont traitent à la gestion d'une compagnie, <strong>ce choix a été fait afin de renforcer la cohésion des modules</strong>, nous avons déléguer
+la responsabilité d'instancier des objets de ces classes à la classe <strong>TransporteurHelper</strong>.</p>
+<p>Chaque compagnie possède un type de trajet propre a elle qui sont définis par les classes <strong>(Vol, Ligne, et Croisière)</strong> qui sont associés a leur compagnie respective et
+qui ont a leur tour, chacune, une association avec les classes définissant le type d'appareil lié <strong>(Avion, Train et Paquebot)</strong> qui ont aussi à leur tour qu'une seule
+association avec la classe qui définit leur type de place pour les voyageurs : Siège pour Avion et Train et Cabine pour Paquebot.</p>
+<p><strong>Le choix de ne faire que deux associations pour chacune de ces classes a été fait dans l'objectif de réduire le couplage des modules.</strong></p>
+<p>Par ailleurs, les classes de différentes compagnies sont aussi des classes de fabrication dans le sens ou elles servent a stocker l'ensemble de leurs déplacements
+(vols, lignes, et croisières) dans un tableau d'instances . Elles ne sont pas les seules car les classes définissant les véhicules stockent aussi des instances des différentes
+Place pour les voyageurs.</p>
+<p>Le paiement est assuré en premier lieu par la classe <strong>PayerForm</strong> dans la vue du client, qui fait appel aux méthode de <strong>PayerFormHandler</strong> puis <strong>PaiementHelper</strong> afin de créer une instance de paiement (créateur).</p>
+<p>Les réservations se font de la même manière à partir de la classe ReserverForm qui hérite de VueClient et passe par le même schéma qui se termine par la création d'une
+instance de réservation par ReservationHelper.</p>
+<p>Nous avons une classe abstraite <strong>Terminal</strong> dont héritent les différentes classes qui correspondent à des terminaux soit Aéroport, Gare, et Port et qui sont controlées par le
+<strong>TerminalHelper</strong> qui créent des instances de types Terminal pour les différents terminaux et fait les opérations qui leurs sont reliés.</p>
+<p><strong>Pour les diagrammes de séquence de la vérification:</strong>, réservation et paiement d'un voyage, nous prenons pour acquis que l'utilisateur est déjà authentifié et a accès à l'application.</p>
+<h3>Contraintes OCL</h3>
+<h4>1) Un aéroport est identifié par trois lettres uniques à chaque aéroport:</h4>
+<pre><code class="prettyprint lang-lang-c prettyprinted" style=""><span class="pln">context </span><span class="typ">Terminal</span><span class="pun">:</span><span class="pln">
+  inv self</span><span class="pun">.</span><span class="typ">Id</span><span class="pun">.</span><span class="pln">size</span><span class="pun">()</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="lit">3</span></code></pre>
+<h4>2) Les noms Id des terminaux sont uniques:</h4>
+<pre><code class="prettyprint lang-lang-c prettyprinted" style=""><span class="pln">context </span><span class="typ">Terminal</span><span class="pln"> inv</span><span class="pun">:</span><span class="pln">
+  </span><span class="typ">Terminal</span><span class="pun">.</span><span class="pln">allInstances</span><span class="pun">()</span><span class="pln"> </span><span class="pun">-&gt;</span><span class="pln">forAll</span><span class="pun">(</span><span class="pln">t1</span><span class="pun">,</span><span class="pln"> t2 </span><span class="pun">|</span><span class="pln"> t1 </span><span class="pun">&lt;&gt;</span><span class="pln"> t2 implies t1</span><span class="pun">.</span><span class="typ">Id</span><span class="pln"> </span><span class="pun">&lt;&gt;</span><span class="pln"> t2</span><span class="pun">.</span><span class="typ">Id</span><span class="pun">)</span></code></pre>
+<h4>3) La partie alphabétique de l'ID d'un vol est unique à chaque compagnie et la partie numérique est unique à chaque vol au sein de la même compagnie</h4>
+<p>-partie alphabetique unique a compagnie</p>
+<pre><code class="prettyprint lang-lang-c prettyprinted" style=""><span class="pln">context </span><span class="typ">CompagnieAerienne</span><span class="pln"> </span><span class="pun">:</span><span class="pln">
+  inv self</span><span class="pun">.</span><span class="pln">id</span><span class="pun">.</span><span class="pln">substring</span><span class="pun">(</span><span class="lit">0</span><span class="pun">,</span><span class="lit">1</span><span class="pun">)</span><span class="pln"> </span><span class="pun">-&gt;</span><span class="pln"> symmetricDifference</span><span class="pun">(</span><span class="pln">self</span><span class="pun">.</span><span class="typ">Id</span><span class="pun">.</span><span class="pln">substring</span><span class="pun">(</span><span class="lit">0</span><span class="pun">,</span><span class="lit">1</span><span class="pun">))-&gt;</span><span class="pln">isEmpty</span><span class="pun">()</span></code></pre>
+<p>-Partie numérique unique a chaque vol au sein de la compagnie</p>
+<pre><code class="prettyprint lang-lang-c prettyprinted" style=""><span class="pln">context </span><span class="typ">Vol</span><span class="pun">:</span><span class="pln">
+  inv self</span><span class="pun">.</span><span class="typ">Id</span><span class="pln"> </span><span class="pun">-&gt;</span><span class="pln"> symmetricDifference</span><span class="pun">(</span><span class="pln">self</span><span class="pun">.</span><span class="pln">vols</span><span class="pun">.</span><span class="pln">vols</span><span class="pun">.</span><span class="typ">Id</span><span class="pun">)-&gt;</span><span class="pln">isEmpty</span><span class="pun">()</span></code></pre>
+<h4>4)  L'aéroport de départ et d'arrivée d'un vol doit être différent</h4>
+<pre><code class="prettyprint lang-lang-c prettyprinted" style=""><span class="pln">context </span><span class="typ">Vol</span><span class="pun">:</span><span class="pln">
+  inv self</span><span class="pun">.</span><span class="pln">origin </span><span class="pun">&lt;&gt;</span><span class="pln"> self</span><span class="pun">.</span><span class="pln">destination</span></code></pre>
+<h4>5) Tous les sièges d'une même section ont le même prix</h4>
+<pre><code class="prettyprint lang-lang-c prettyprinted" style=""><span class="typ">Context</span><span class="pln"> </span><span class="typ">Siege</span><span class="pun">:</span><span class="pln">
+  inv </span><span class="typ">Siege</span><span class="pun">.</span><span class="pln">allInstances</span><span class="pun">()-&gt;</span><span class="pln">forAll</span><span class="pun">(</span><span class="pln">s1</span><span class="pun">,</span><span class="pln"> s2 </span><span class="pun">|</span><span class="pln"> s1</span><span class="pun">.</span><span class="pln">classe </span><span class="pun">=</span><span class="pln"> s1</span><span class="pun">.</span><span class="pln">classe implies s1</span><span class="pun">.</span><span class="pln">prix </span><span class="pun">=</span><span class="pln"> s2</span><span class="pun">.</span><span class="pln">prix</span><span class="pun">)</span></code></pre>
+<h4>6)Un port est identifié par trois lettres uniques à chaque port</h4>
+<pre><code class="prettyprint lang-lang-c prettyprinted" style=""><span class="pln">context </span><span class="typ">Terminal</span><span class="pun">:</span><span class="pln">
+  inv self</span><span class="pun">.</span><span class="typ">Id</span><span class="pun">.</span><span class="pln">size</span><span class="pun">()</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="lit">3</span></code></pre>
+<h4>7) Un itinéraire ne peut pas durer plus de 21 jours</h4>
+<pre><code class="prettyprint lang-lang-c prettyprinted" style=""><span class="pln">context </span><span class="typ">Itineraire</span><span class="pun">:</span><span class="pln">
+  inv self</span><span class="pun">.</span><span class="pln">duree </span><span class="pun">&lt;=</span><span class="pln"> </span><span class="lit">21</span></code></pre>
+<h4>8) Le port de départ et d'arrivée doit être le même</h4>
+<pre><code class="prettyprint lang-lang-c prettyprinted" style=""><span class="pln">context </span><span class="typ">Croisi</span><span class="pun">è</span><span class="pln">re</span><span class="pun">:</span><span class="pln">
+  inv self</span><span class="pun">.</span><span class="pln">origin </span><span class="pun">=</span><span class="pln"> self</span><span class="pun">.</span><span class="pln">destination</span></code></pre>
+<h4>9) Un paquebot peut être assigné à plusieurs itinéraires tant qu'ils ne se chevauchent pas</h4>
+<pre><code class="prettyprint lang-lang-c prettyprinted" style=""><span class="pln">context </span><span class="typ">Paquebot</span><span class="pun">:</span><span class="pln">
+  inv self</span><span class="pun">.</span><span class="pln">itineraire </span><span class="pun">-&gt;</span><span class="pln"> intersection</span><span class="pun">(</span><span class="pln">self</span><span class="pun">.</span><span class="pln">itineraires</span><span class="pun">)</span><span class="pln"> </span><span class="pun">-&gt;</span><span class="pln">isEmpty</span><span class="pun">()</span></code></pre>
+<h4>10) Toutes les cabines d'une même section ont le même prix</h4>
+<pre><code class="prettyprint lang-lang-c prettyprinted" style=""><span class="typ">Context</span><span class="pln"> </span><span class="typ">Cabine</span><span class="pln">
+  inv </span><span class="typ">Cabine</span><span class="pun">.</span><span class="pln">allInstances</span><span class="pun">()-&gt;</span><span class="pln">forAll</span><span class="pun">(</span><span class="pln">c1</span><span class="pun">,</span><span class="pln"> c2 </span><span class="pun">|</span><span class="pln"> c1</span><span class="pun">.</span><span class="pln">section </span><span class="pun">=</span><span class="pln"> c1</span><span class="pun">.</span><span class="pln">section implies c1</span><span class="pun">.</span><span class="pln">prix </span><span class="pun">=</span><span class="pln"> s2</span><span class="pun">.</span><span class="pln">prix</span><span class="pun">)</span></code></pre>
+<h4>11) Une gare est identifiée par trois lettres uniques à chaque gare</h4>
+<pre><code class="prettyprint lang-lang-c prettyprinted" style=""><span class="pln">context </span><span class="typ">Terminal</span><span class="pun">:</span><span class="pln">
+  inv self</span><span class="pun">.</span><span class="typ">Id</span><span class="pun">.</span><span class="pln">size</span><span class="pun">()</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="lit">3</span></code></pre>
+<h4>12) Le client peut réserver un siège disponible dans un vol (ligne) donné</h4>
+<pre><code class="prettyprint lang-lang-c prettyprinted" style=""><span class="typ">Context</span><span class="pln"> </span><span class="typ">ReservationFormHandler</span><span class="pun">:</span><span class="pln">
+  pre self</span><span class="pun">.</span><span class="pln">reserverPlace</span><span class="pun">()</span><span class="pln"> </span><span class="pun">-&gt;</span><span class="pln"> intersection</span><span class="pun">(</span><span class="pln">self</span><span class="pun">.</span><span class="pln">reserver</span><span class="pun">.</span><span class="pln">reservations</span><span class="pun">)</span><span class="pln"> </span><span class="pun">-&gt;</span><span class="pln"> isEmpty</span><span class="pun">()</span></code></pre>
+<h4>13) Un siège réservé devient assigné à un passager une fois payé: le siège est donc confirmé</h4>
+<pre><code class="prettyprint lang-lang-c prettyprinted" style=""><span class="typ">Context</span><span class="pln"> </span><span class="typ">PayerFormHandler</span><span class="pln"> </span><span class="pun">:</span><span class="pln">
+  post self</span><span class="pun">.</span><span class="pln">payerReservation </span><span class="pun">-&gt;</span><span class="pln"> notEmpty</span><span class="pun">()</span><span class="pln"> implies self</span><span class="pun">.</span><span class="pln">assigner</span><span class="pun">.</span><span class="pln">assignerPlace</span><span class="pun">()</span><span class="pln"> </span><span class="pun">-&gt;</span><span class="pln"> notEmpty</span><span class="pun">()</span></code></pre>
+<h4>14)Le client peut réserver une cabine disponible pour un itinéraire donné</h4>
+<pre><code class="prettyprint lang-lang-c prettyprinted" style=""><span class="typ">Context</span><span class="pln"> </span><span class="typ">ReservationFormHandler</span><span class="pun">:</span><span class="pln">
+  pre self</span><span class="pun">.</span><span class="pln">reserverPlace</span><span class="pun">()</span><span class="pln"> </span><span class="pun">-&gt;</span><span class="pln"> intersection</span><span class="pun">(</span><span class="pln">self</span><span class="pun">.</span><span class="pln">reserver</span><span class="pun">.</span><span class="pln">reservations</span><span class="pun">)</span><span class="pln"> </span><span class="pun">-&gt;</span><span class="pln"> isEmpty</span><span class="pun">()</span></code></pre>
+</div></body></html>

@@ -1,0 +1,138 @@
+Le diagramme de classe se divise en 4 paquets: 
+
+Le paquet Vue permet de gérer toutes les opérations liées à l'interface du logiciel.
+
+Le paquet Utilitaire permet de standardiser les différents type de données.
+
+Le paquet Vehicule permet de standardiser les classes des différents véhicules et de stocker leurs informations, ainsi que les classes liées aux places, et la réservation.
+
+Le paquet transport contient les classes gérant les opérations des différentes compagnies de transport et d'instancier différents voyages.
+
+
+Dans le paquet Vue:
+	
+	Nous avons la superclasse VueCLient qui contient les opérations d'affichage et de lecture, dont héritent toutes les autres sous classes de l'interface, servant à manipuler les réservations, paiement, authentification etc ...
+ Il s'agit ici d'un couplage d'héritage nécessaire au fonctionnement du module.
+Lors de l'utilisation de ces classes, nous commençons par l'écran login, qui va faire appel a une méthode de la classe EcranAccueil qui à son tour fera appel aux méthodes de l'une des classe (PayerForm, VerifierForm, ReserverForm), Nous avons affaire dans ce cas de figure à un couplage par contrôle, soit la classe EcranLogin contrôle le flux de EcranAccueuil qui va contrôler le flux d'une des trois dernières classes.
+
+Du fait du couplage par contrôle de ce module, mais aussi du fait que celui ci effectue des actions logiquement catégorisées ensemble, nous aurons ici une cohésion logique, comme celle-ci est faible nous avons divisés les classes de module en fonction de la Vue qu'elles géraient.
+
+	Le Fardeau des classes : Les sous classes de VueClient ont toutes un faible fardeau (2) : |VueClient, String|. Comme il s'agit de classes d'application ayant un fardeau faible, elles ne sont donc pas réutilisables.
+
+
+Dans le paquet Controller: 
+
+	Nous avons les classes Controlleur qui font l'intermédiaire entre la vue, Transport,  Véhicule et Utilitaire. Celles ci servent a contrôler le login, les réservations, paiement Transactions, ainsi que la création de Compagnies et de terminaux. 
+La classe LoginHandler va utiliser les attributs de la classe Client dans le module Utilitaire (Couplage par données). La classe VerifierFormHandler, PayerFormHandler et ReserverFormHandler utilisent les classes Helper, excepté TransporteurHelper, il s'agit d'un couplage par contenu (les modules "Handler" s'appuient sur les modules "Helper"). Les classes Helper quant à elles, font appel aux classes d'instances qui leurs sont associés, Transporteur pour TransporteurHelper etc ... (Couplage par contenu).
+
+En ce qui concerne les classes "Helper", celles ci contiennent des méthodes opérant sur la même structure de données, elles ont donc une forte cohésion (cohésion communicationnelle).
+
+
+	Le Fardeau des classes : Il s'agit de classes d'un domaine d'application. Elles ont toutes un fardeau un peu plus élevé que les classes du paquet Vue, ce qui les rend un peu plus réutilisable.
+
+		 Les classes "Handler" : 
+			F(LoginHandler) :|Client, String, Date| = 3
+			F(VerifierFormHandler) = |Terminal, String, Date, char, float, int, TerminalHelper| = 7
+			F(ReserverFormHandler) = |Reservation,Place, String, float, char, Date, bool,| = 7
+
+		Les classes Helper: 
+			Environ le même fardeau que les classes "Handler".
+
+
+Dans le paquet Utilitaire:
+	
+	Nous avons toutes les classes Utilitaires qui représentent des types de données sans méthodes, utilisés pour mener à bien les opérations. 
+	Cohésion logique. Domaine de fondation, réutilisable.
+	Le Fardeau des classes : Faible fardeau, module non réutilisable. 
+		F(Client): |String, Date, Utilisateur, char, Personne| = 5
+		F(Transaction); |float, string, Date| = 3 
+	
+
+Dans le paquet Véhicules:
+
+	Nous avons aussi des classes qui représentent des types de données utilisées pour les différentes opérations des autres modules. Toutefois, celles-ci possèdent des méthodes  permettant de manipuler d'autres types de données du même module. Par exemple, la classe Avion à besoin des classes Siège et Section, en les faisant passer en paramètres à ses propres méthodes, comme Avion utilise tous les éléments dont elle a besoin de ces 2 dernières classes, il s'agit donc d'un couplage par données. Nous aurons la même chose avec les classes Train et Paquebot. 
+	Nous avons aussi un couplage d'héritage entre la superclasse Vehicule et ses sous classes Avion, Train et Paquebot, même chose pour Section et ses sous classes SectionBateau, SectionAvion et SectionTrain.
+
+	En ce qui concerne les classes Avion, Train, et Paquebot, les méthodes effectuent des actions reliées par la procédure (creerSection et AssignerPrix), et opèrent toutes sur les données (Siege ou Cabine), Nous avons donc une cohésion forte (cohésion communicationnelle).
+
+	Le Fardeau des classes : Couplage des classes de compagnies, terminaux et types de voyages élevé. Toutes ces classes utilisent beaucoup de types de données des modules Transport et Véhicules, grâce aux relations d"héritage et de dépendance et associations. Ces deux derniers modules sont réutilisables.
+
+
+Dans le paquet Transport:
+
+	Nous avons les classes qui concernent les types de données des Compagnies, Voyages, et Terminaux.
+	Ces classes disposent d'un couplage d'héritage. Exemple, La superclasse Transporteur et ses sous classes CompagnieAerienne, CompagnieFerroviaire, CompagnieCroisiere. Il en est de même pour Voyage et Terminaux. 
+	Les classes de Compagnies sont associées aux classes types de données Des différents voyages, ainsi leurs méthodes peuvent instancier de nouveaux objets de ces dernières, mais aussi les modifier et les mettre à jour, nous aurons donc un couplage par contrôle.
+
+	En ce qui concerne les classes de compagnies, nous avons le même cas de figure que les classes "Helper" du paquet Controller (cohésion communicationnelle).
+
+	Le Fardeau des classes : Couplage des classes des véhicules, places élevé. Toutes ces classes utilisent beaucoup de types de données des modules Transport et Véhicules grâce aux relations d"héritage et de dépendance et associations. Ces deux derniers modules sont réutilisables.
+
+
+//////////////////////////////////////////////////////
+
+
+Principes de conception utilisé: 
+
+	Single responsibility principle (SRP): 
+		Dans le module Vue, nous avons opté pour séparer les différentes Interfaces, en fonction de l'action qu'exécute l'utilisateur (Réservation, paiement, Login). De même, dans le module Controlleur, nous avons assigné a chaque classe la responsabilité d'une action particulière : les classes "Handler" servent d'intermédiaire entre la vue et les classes Helper, ces dernières, contiennent des méthodes particulières a chaque action que l'on veut faire avec le logiciel (Réservation, Paiement, Création de compagnie de transport, Création de terminal). Pour le paquet Transport, Nous avons construit les sous classe de Transporteur pour leur attribuer la responsabilité unique des opérations pour chaque different transporteur, il en est de même pour les sous classe de Voyage. L'application de ce principe de conception permet d'obtenir une meilleure cohésion dans les modules et favorise la réutilisabilité de ceux ci, de même si l'on veut changer les classes, cela sera que pour une Seule raison.
+
+	Open/Closed Principle (OCP): 
+		Dans le module utilitaire, nous avons opté pour mettre une classe abstraite Personne, puis Utilisateur, étant donné qu'il pourrait y avoir plusieurs type de personnes et plusieurs types d'utilisateurs différents, et enfin nous avons décidé de mettre la classe concrète Client qui serait la sous classe d'Utilisateur. Le même principe est suivi pour La superclasse abstraite Transaction et ses sous classes concrètes Paiement et Remboursement. De même dans le module Transport, nous avons la superclasse abstraite Transporteur et ses sous classes concrètes de type de compagnies. Le même principe est suivi dans le module Vehicule Avec la super classe abstraite Véhicule et les différents types de véhicules. Ce principe de conception, nous permettra de pouvoir étendre et enrichir le comportement des classes abstraites. Exemple : Si nous voulons ajouter un nouveau type de véhicule, ou un nouveau type de transaction, on pourra le faire sans avoir a modifier les classes Transaction, Véhicule etc ... Dépendre des abstractions permet d'obtenir un module réutilisable et beaucoup plus stable.
+
+	Liskov Substition Principle : 
+		Dans le module Transport, nous avons une relation d'héritage entre les superclasses abstraites Terminal et les biffants type de terminaux, entre la super classe abstraite Transporteur et les different types de transporteurs. Ce principe est respecté car  la classe TerminalHelper du module Controlleur possède une structure de données permettant de stocker les différents Terminaux de type Terminal, tout en les instanciant comme Aéroport, Gare, ou Port. Ainsi avec la relation d'héritage, nous pouvons a la fois utile Terminal ou bien une de ses sous classes concrètes, ainsi toute opération qui reçoit un Terminal doit pouvoir recevoir un Aéroport, Gare ou Port.
+
+	Interface Segregation Principle:
+		 Dans le module Vue: La VueClient est divisée en plusieurs interfaces différentes, spécifiques au besoin de chaque utilisateur. Chaque utilisateur aura uniquement les méthodes dont il à besoin, cela sert à renforcer la cohésion du module, par ailleurs, l'utilisateur ne sera pas forcé de dépendre de méthodes qu'il n'utilise pas.
+
+	Dependancy Inversion Principle:
+		Similaire à ce qui à été dit pour le Open/Closed Principle, nous avons choisi d'opter pour pour la dépendance envers les classes abstraites car celles ci ne changent pas, sont plus stables, peuvent s'étendre mais sans être modifiées. Les classes concrètes qui en dépendent sont évidemment plus détaillées, et peuvent être sujettes à des changements à l'avenir sans problèmes.
+
+////////////////////////////
+
+Principe de conceptions de paquets:
+
+	Stable Dependancy Principle:
+	  	Mesure de l'instabilité:
+
+		Paquet Vue: 1/1 = 1 
+		Paquet Utilitaire: 0/1 = 0
+		Paquet Controlleur: 3/4 = 0.75
+		Paquet Transport : 1/2 = 0.5
+		Paquet Véhicules: 0/2 = 0
+
+	Acyclic Dependancy principle:		
+		Nous n'avons aucun cycle de dépendance des paquets.
+	
+	Stable Abstraction Principle:
+	
+		Paquet Vue: 1/6 = 0.16 
+		Paquet Utilitaire: 3/7 = 0.4
+		Paquet Controlleur: 0/8 = 0
+		Paquet Transport : 3/14 = 0.2
+		Paquet Véhicules: 5/15 = 0.3
+////////////////
+
+	Graphe IA:
+
+		Paquet Vue: D = |0.16 +1-1|= 0.16 
+		Paquet Utilitaire: D = |0.4 + 0 - 1| = 0.6
+		Paquet Controlleur: D = |0 + 0.75 - 1| = 0.25
+		Paquet Transport : D = | 0.2 + 0.5 - 1| = 0.3
+		Paquet Véhicules: D = |0 + 0.3 -1| = 0.7
+
+Les paquets les plus proches du 0 sont Vue, Controlleur et Transport, ils sont donc les meilleurs. La fonction du paquet Utilitaire comme paquet générique justifie son mauvais score.
+
+			
+
+ 
+	
+
+
+
+
+	
+	
+
+
